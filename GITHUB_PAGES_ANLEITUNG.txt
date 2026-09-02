@@ -1,0 +1,39 @@
+HASPL RegieApp V0.14.0 – GitHub-Pages-Test
+============================================
+
+Vorgesehene Testadresse:
+https://kollapp-at.github.io/RegieApp/
+
+Veröffentlichung im bestehenden Repository "Kollapp-at/RegieApp":
+
+1. Den INHALT dieses Ordners in den Hauptordner des Branches "main" hochladen.
+   Wichtig: index.html muss direkt im Hauptordner liegen, nicht in einem
+   zusätzlichen Unterordner oder nur innerhalb einer ZIP-Datei.
+
+2. Auf GitHub das Repository "RegieApp" öffnen.
+
+3. Settings > Pages öffnen.
+
+4. Unter "Build and deployment" auswählen:
+   Source: Deploy from a branch
+   Branch: main
+   Folder: / (root)
+
+5. Auf "Save" klicken und einige Minuten warten.
+
+6. Danach die App aufrufen:
+   https://kollapp-at.github.io/RegieApp/
+
+Testmodus und Datenschutz:
+- Auf github.io läuft die App absichtlich im lokalen Testmodus.
+- Es findet keine Anmeldung am HASPL-Portal statt.
+- Es findet keine Synchronisierung mit dem HASPL-Server statt.
+- Testberichte, Fotos und Unterschriften bleiben im jeweiligen Browsergeraet.
+- Beim Loeschen der Browserdaten koennen diese lokalen Testdaten verloren gehen.
+- Das GitHub-Repository ist öffentlich. Keine echten Zugangsdaten oder
+  vertraulichen Projektdokumente als Programmdateien hochladen.
+
+Falls nach einem Update noch eine alte Version angezeigt wird:
+- Seite einmal vollständig neu laden.
+- Falls notwendig die Website-Daten bzw. den PWA-Cache dieser Testadresse löschen.
+
