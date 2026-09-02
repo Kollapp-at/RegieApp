@@ -1,0 +1,58 @@
+HASPL REGIEAPP V0.16.0 – PRÜFBERICHT
+=====================================
+
+Prüfdatum: 02.09.2026
+Ziel: Abschlussprüfung des lokalen V0.16.0-Patches ohne Veröffentlichung
+
+1. APPLE-PENCIL-WERKZEUGBEDIENUNG
+----------------------------------
+ERGEBNIS: BESTANDEN
+- Stifttipps auf die Werkzeugbuttons wählen das jeweilige Werkzeug.
+- Ein schneller Doppeltipp mit dem Stift auf der Zeichenfläche wählt automatisch den Radierer.
+- Der unbeabsichtigte erste Punkt des Doppeltipps wird entfernt.
+- Die aktive Werkzeuganzeige wechselt automatisch auf „Radierer“.
+- Die Erkennung funktioniert über Pointer-Events und bleibt mit Maus, Touch und S Pen kompatibel.
+- Da Safari den speziellen Apple-Pencil-Hardware-Doppeltipp nicht als eigenes Web-Ereignis meldet, wird der Doppeltipp über zwei schnelle Stifttipps auf der Zeichenfläche erkannt.
+
+2. ZEICHENFLÄCHE
+----------------
+ERGEBNIS: BESTANDEN
+- Pointer-Capture bleibt während des Strichs aktiv.
+- Textauswahl, Kopieren, Kontextmenü und Drag-and-drop werden innerhalb der Zeichenfläche blockiert.
+- Stift-, Touch- und Maus-Eingaben werden direkt verarbeitet.
+
+3. PDF-FUNKTIONEN
+-----------------
+ERGEBNIS: BESTANDEN
+- Firmenkopf auf jeder Seite.
+- Fußzeile mit Berichtart und Baustelle.
+- Gespeichertes Erstellungsdatum statt Druckdatum.
+- Baustellenname im PDF-Dateinamen.
+- Tabellen- und Handschrift-Seitenumbrüche ohne verwaiste Überschrift oder großen Leerraum.
+
+4. VERSION UND KOMPATIBILITÄT
+----------------------------
+ERGEBNIS: BESTANDEN
+- Sichtbare App-Version, version.json, Manifest, Paketversion und PDF-Metadaten: V0.16.0.
+- IndexedDB-Name haspl-regieapp-v1 und Version 2 bleiben unverändert.
+- Offline-/Portal-Kompatibilität bleibt erhalten.
+
+5. TECHNISCHE PRÜFUNGEN
+-----------------------
+ERGEBNIS: BESTANDEN
+- JavaScript-Syntaxprüfung aller App-Skripte und des Service Workers.
+- Pointer-Test für Stifteingabe und blockierte Auswahl-/Kopierevents bestanden.
+- Apple-Pencil-Doppeltipp-Test mit automatischer Radierer-Auswahl bestanden.
+- TypeScript-Prüfung mit tsc --noEmit.
+- Produktions-Build mit PORT=18191 und BASE_PATH=/.
+- ZIP-Integrität und Test-Entpacken bestanden.
+
+6. RELEASE-ARCHIV
+-----------------
+ERGEBNIS: BESTANDEN
+- Archiv: HASPL_RegieApp_V0.16.0.zip.
+- Separate Downloadkopie und Produktions-Build-Asset entsprechen dem endgültigen Archiv.
+
+VERÖFFENTLICHUNG
+----------------
+Es wurde kein Deployment und keine Veröffentlichung durchgeführt.

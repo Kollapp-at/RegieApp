@@ -3,13 +3,22 @@
   class DrawingPad{
     constructor(canvas){
       this.canvas=canvas;this.ctx=canvas.getContext("2d");this.width=1600;this.height=1000;canvas.width=this.width;canvas.height=this.height;
-      this.tool="freehand";this.color="#c62828";this.lineWidth=6;this.paper="blank";this.objects=[];this.redoStack=[];this.background=null;this.backgroundImage=null;this.active=null;this.pointerId=null;this.expandable=false;this.pendingScroll=false;
+      this.tool="freehand";this.color="#c62828";this.lineWidth=6;this.paper="blank";this.objects=[];this.redoStack=[];this.background=null;this.backgroundImage=null;this.active=null;this.pointerId=null;this.expandable=false;this.pendingScroll=false;this.lastPenTap=null;this.onToolChange=null;
       this.bind();this.resizeCss();window.addEventListener("resize",()=>this.resizeCss());
     }
-    bind(){this.canvas.addEventListener("pointerdown",e=>this.down(e));this.canvas.addEventListener("pointermove",e=>this.move(e));this.canvas.addEventListener("pointerup",e=>this.up(e));this.canvas.addEventListener("pointercancel",e=>this.up(e));}
+    bind(){
+      const options={passive:false};
+      this.canvas.addEventListener("pointerdown",e=>this.down(e),options);
+      this.canvas.addEventListener("pointermove",e=>this.move(e),options);
+      this.canvas.addEventListener("pointerup",e=>this.up(e),options);
+      this.canvas.addEventListener("pointercancel",e=>this.up(e),options);
+      this.canvas.addEventListener("contextmenu",e=>{e.preventDefault();e.stopPropagation()},options);
+      ["selectstart","dragstart","copy"].forEach(type=>this.canvas.addEventListener(type,e=>{e.preventDefault();e.stopPropagation()},options));
+      this.canvas.draggable=false;
+    }
     resizeCss(){const wrap=this.canvas.parentElement;if(!wrap)return;const maxW=Math.max(300,wrap.clientWidth-24),maxH=Math.max(260,wrap.clientHeight-24);const scale=this.expandable?maxW/this.width:Math.min(maxW/this.width,maxH/this.height);this.canvas.style.width=Math.floor(this.width*scale)+"px";this.canvas.style.height=Math.floor(this.height*scale)+"px";}
     point(e){const r=this.canvas.getBoundingClientRect();return {x:(e.clientX-r.left)*this.width/r.width,y:(e.clientY-r.top)*this.height/r.height,pressure:e.pressure||.5}}
-    setTool(tool){this.tool=tool}
+    setTool(tool){this.tool=tool;this.onToolChange?.(tool)}
     setColor(color){this.color=color}
     setWidth(width){this.lineWidth=Number(width)||6}
     setPaper(paper){this.paper=["lined","grid","blank"].includes(paper)?paper:"blank";this.draw()}
@@ -18,14 +27,20 @@
     expandNear(y){if(!this.expandable||y<this.height-180)return;this.height+=800;this.canvas.height=this.height;this.pendingScroll=true;this.draw();this.resizeCss()}
     loadBackground(src){return new Promise(resolve=>{const img=new Image();img.onload=()=>{this.backgroundImage=img;resolve()};img.onerror=()=>resolve();img.src=src})}
     down(e){
-      if(e.button!==undefined&&e.button!==0&&e.pointerType==="mouse")return;e.preventDefault();const p=this.point(e);this.expandNear(p.y);
+      if(e.isPrimary===false||(e.button!==undefined&&e.button!==0&&e.pointerType==="mouse"))return;e.preventDefault();e.stopPropagation();const p=this.point(e);
+      if(e.pointerType==="pen"&&this.lastPenTap&&Date.now()-this.lastPenTap.time<=420&&Math.hypot(p.x-this.lastPenTap.x,p.y-this.lastPenTap.y)<=70){
+        const last=this.objects.at(-1);
+        if(last?.type==="freehand"&&last.points.length===1){this.objects.pop();this.redoStack=[]}
+        this.lastPenTap=null;this.setTool("eraser");this.draw();return;
+      }
+      this.expandNear(p.y);
       if(this.tool==="text"){const text=prompt("Text eingeben:","");if(text?.trim()){this.commit({type:"text",x:p.x,y:p.y,text:text.trim(),color:this.color,width:this.lineWidth})}return}
       if(this.tool==="eraser"){this.eraseAt(p);return}
       this.pointerId=e.pointerId;this.canvas.setPointerCapture?.(e.pointerId);
       this.active=this.tool==="freehand"?{type:"freehand",points:[p],color:this.color,width:this.lineWidth}:{type:this.tool,x1:p.x,y1:p.y,x2:p.x,y2:p.y,color:this.color,width:this.lineWidth};this.draw();
     }
-    move(e){if(this.pointerId!==e.pointerId||!this.active)return;e.preventDefault();const p=this.point(e);this.expandNear(p.y);if(this.active.type==="freehand"){const last=this.active.points.at(-1);if(!last||Math.hypot(p.x-last.x,p.y-last.y)>2)this.active.points.push(p)}else{this.active.x2=p.x;this.active.y2=p.y}this.draw()}
-    up(e){if(this.pointerId!==e.pointerId||!this.active)return;e.preventDefault();const item=this.active;this.active=null;this.pointerId=null;this.canvas.releasePointerCapture?.(e.pointerId);if(item.type!=="freehand"||item.points.length>1)this.commit(item);else this.draw();if(this.pendingScroll){this.pendingScroll=false;requestAnimationFrame(()=>this.canvas.parentElement?.scrollTo({top:this.canvas.parentElement.scrollHeight,behavior:"smooth"}))}}
+    move(e){if(this.pointerId!==e.pointerId||!this.active)return;e.preventDefault();e.stopPropagation();const p=this.point(e);this.expandNear(p.y);if(this.active.type==="freehand"){const last=this.active.points.at(-1);if(!last||Math.hypot(p.x-last.x,p.y-last.y)>2)this.active.points.push(p)}else{this.active.x2=p.x;this.active.y2=p.y}this.draw()}
+    up(e){if(this.pointerId!==e.pointerId||!this.active)return;e.preventDefault();e.stopPropagation();const item=this.active;this.active=null;this.pointerId=null;this.canvas.releasePointerCapture?.(e.pointerId);if(item.type!=="freehand"||item.points.length>1){this.lastPenTap=null;this.commit(item)}else{if(e.pointerType==="pen"){const point=item.points[0];this.lastPenTap={time:Date.now(),x:point.x,y:point.y}}else this.lastPenTap=null;this.commit(item)}if(this.pendingScroll){this.pendingScroll=false;requestAnimationFrame(()=>this.canvas.parentElement?.scrollTo({top:this.canvas.parentElement.scrollHeight,behavior:"smooth"}))}}
     commit(item){this.objects.push(structuredClone(item));this.redoStack=[];this.draw()}
     undo(){if(!this.objects.length)return;this.redoStack.push(this.objects.pop());this.draw()}
     redo(){if(!this.redoStack.length)return;this.objects.push(this.redoStack.pop());this.draw()}
