@@ -1,0 +1,60 @@
+HASPL REGIEAPP V0.14.0 – PRÜFBERICHT
+=====================================
+
+Prüfdatum: 02.09.2026
+Ziel: Abschlussprüfung des lokalen V0.14.0-Patches ohne Veröffentlichung
+
+1. ERSTELLUNGSDATUM IN DER PDF-FUSSZEILE
+-----------------------------------------
+ERGEBNIS: BESTANDEN
+- „Erstellt am“ verwendet das gespeicherte Erstellungsdatum des Berichts.
+- Das aktuelle Druckdatum wird nicht mehr verwendet.
+- Tagesbericht, Regieanforderung und Wochenbericht wurden geprüft.
+- Ältere Berichte ohne separates Erstellungsdatum verwenden gespeicherte Berichtsdaten als Fallback.
+
+2. PDF-FUSSZEILE
+----------------
+ERGEBNIS: BESTANDEN
+- Die mittlere Fußzeile enthält Berichtart und Baustellenname.
+- Seitenzahl und Erstellzeit bleiben in der Fußzeile erhalten.
+- Beispiel: „Tagesbericht · Baustelle Musterbau“.
+
+3. PDF-KOPF AUF ALLEN SEITEN
+-----------------------------
+ERGEBNIS: BESTANDEN
+- Der Firmenkopf wird auf der ersten Seite und auf jeder Folgeseite ausgegeben.
+- Manuelle und von Tabellen erzeugte Folgeseiten reservieren den Kopfbereich.
+- Der wiederholte Kopf enthält Logo, Firmenname, Anschrift, Telefon, E-Mail, UID und Firmenbuchnummer.
+
+4. PDF-DATEINAMEN UND SEITENUMBRÜCHE
+-------------------------------------
+ERGEBNIS: BESTANDEN
+- Exportierte PDF-Dateien enthalten Berichtstyp, Berichtsnummer und Baustellenname.
+- Tabellenüberschrift und Tabellenbeginn bleiben auf derselben Seite.
+- Handschriftliche Arbeitsleistung wird proportional und ohne Abschneiden ausgegeben.
+
+5. VERSION UND KOMPATIBILITÄT
+----------------------------
+ERGEBNIS: BESTANDEN
+- Sichtbare App-Version, version.json, Manifest, Paketversion und PDF-Metadaten: V0.14.0.
+- IndexedDB-Name haspl-regieapp-v1 und Version 2 bleiben unverändert.
+- Es gibt keinen Aufruf zum Löschen der IndexedDB.
+
+6. TECHNISCHE PRÜFUNGEN
+-----------------------
+ERGEBNIS: BESTANDEN
+- JavaScript-Syntaxprüfung aller App-Skripte und des Service Workers.
+- TypeScript-Prüfung mit tsc --noEmit.
+- Produktions-Build mit PORT=18191 und BASE_PATH=/.
+- Test des gespeicherten Erstellungsdatums für alle drei Berichtstypen bestanden.
+- ZIP-Integrität und Test-Entpacken bestanden.
+
+7. RELEASE-ARCHIV
+-----------------
+ERGEBNIS: BESTANDEN
+- Archiv: HASPL_RegieApp_V0.14.0.zip.
+- Separate Downloadkopie und Produktions-Build-Asset entsprechen dem endgültigen Archiv.
+
+VERÖFFENTLICHUNG
+----------------
+Es wurde kein Deployment und keine Veröffentlichung durchgeführt.

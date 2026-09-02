@@ -1,0 +1,17 @@
+{
+  "name": "HASPL RegieApp V0.14.0",
+  "short_name": "RegieApp",
+  "description": "Regie-, Tages- und Wochenberichte für HASPL Baustellen",
+  "start_url": "./index.html",
+  "scope": "./",
+  "id": "./?app=regieapp",
+  "display": "standalone",
+  "orientation": "any",
+  "background_color": "#0b141e",
+  "theme_color": "#102b39",
+  "icons": [
+    {"src":"./icon-180.png","sizes":"180x180","type":"image/png"},
+    {"src":"./icon-192.png","sizes":"192x192","type":"image/png"},
+    {"src":"./icon-512.png","sizes":"512x512","type":"image/png"}
+  ]
+}
