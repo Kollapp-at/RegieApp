@@ -1,40 +1,37 @@
-HASPL RegieApp V0.16.0 – GitHub-Pages-Test
+HASPL RegieApp V0.17.0 – GitHub-Pages-Test
 ============================================
 
 Testadresse:
 https://kollapp-at.github.io/RegieApp/
 
-Aktualisierung des bestehenden Repositorys "Kollapp-at/RegieApp":
+Aktualisierung des Repositorys "Kollapp-at/RegieApp":
 
 1. Diese ZIP am Computer entpacken.
-
-2. Im Repository "RegieApp" auf "Add file" und "Upload files" klicken.
-
+2. Im Repository auf "Add file" > "Upload files" klicken.
 3. Den GESAMTEN INHALT des entpackten Ordners hochladen.
-   Wichtig: index.html muss direkt im Hauptordner des Branches "main" liegen.
-   Die ZIP-Datei selbst darf nicht nur als einzelne Datei hochgeladen werden.
-
+   Wichtig: index.html muss direkt im Hauptordner von "main" liegen.
+   Nicht nur die ZIP-Datei als einzelne Datei hochladen.
 4. Unten auf "Commit changes" klicken.
 
-5. Falls GitHub Pages noch nicht aktiviert ist:
-   Settings > Pages > Build and deployment
-   Source: Deploy from a branch
-   Branch: main
-   Folder: / (root)
-   Danach "Save" anklicken.
+Falls GitHub Pages noch nicht aktiviert ist:
+Settings > Pages > Build and deployment
+Source: Deploy from a branch
+Branch: main
+Folder: / (root)
+Danach "Save" anklicken.
 
-6. Den Abschluss der Bereitstellung abwarten und danach aufrufen:
-   https://kollapp-at.github.io/RegieApp/
+Nach der Bereitstellung aufrufen:
+https://kollapp-at.github.io/RegieApp/
 
 Testmodus:
 - Auf github.io läuft die App ohne HASPL-Anmeldung im lokalen Testmodus.
 - Es findet keine Synchronisierung mit dem HASPL-Server statt.
 - Testberichte, Fotos und Unterschriften bleiben im jeweiligen Browsergeraet.
-- Beim Loeschen der Browserdaten koennen die lokalen Testdaten verloren gehen.
-- Für diesen Vorabtest nach Möglichkeit nur Testdaten verwenden.
+- Beim Loeschen der Browserdaten koennen lokale Testdaten verloren gehen.
+- Für den Vorabtest nach Möglichkeit nur Testdaten verwenden.
 
 Nach einem Versionswechsel:
-- Die Seite einmal mit Strg + F5 vollständig neu laden.
-- Wird weiterhin die alte Version angezeigt, die Website-Daten bzw. den
-  PWA-Cache für kollapp-at.github.io löschen und die Seite neu öffnen.
+- Seite mit Strg + F5 vollständig neu laden.
+- Wird weiterhin die alte Version angezeigt, Website-Daten bzw. den PWA-Cache
+  für kollapp-at.github.io löschen und die Seite neu öffnen.
 

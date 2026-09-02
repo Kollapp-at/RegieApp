@@ -1,4 +1,4 @@
-HASPL REGIEAPP V0.16.0
+HASPL REGIEAPP V0.17.0
 =====================
 
 BASIS UND KOMPATIBILITÄT
@@ -9,7 +9,7 @@ BASIS UND KOMPATIBILITÄT
 - Bestehende IndexedDB haspl-regieapp-v1 bleibt erhalten.
 - Additive IndexedDB-Migration von Version 1 auf 2.
 
-NEU IN V0.16.0
+NEU IN V0.17.0
 ----------------
 
 - Wochenberichte aggregieren Tagesberichte lokal datumsrichtig von Montag bis Sonntag.

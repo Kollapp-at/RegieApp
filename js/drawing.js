@@ -3,7 +3,7 @@
   class DrawingPad{
     constructor(canvas){
       this.canvas=canvas;this.ctx=canvas.getContext("2d");this.width=1600;this.height=1000;canvas.width=this.width;canvas.height=this.height;
-      this.tool="freehand";this.color="#c62828";this.lineWidth=6;this.paper="blank";this.objects=[];this.redoStack=[];this.background=null;this.backgroundImage=null;this.active=null;this.pointerId=null;this.expandable=false;this.pendingScroll=false;this.lastPenTap=null;this.onToolChange=null;
+      this.tool="freehand";this.color="#c62828";this.lineWidth=6;this.paper="blank";this.objects=[];this.redoStack=[];this.background=null;this.backgroundImage=null;this.active=null;this.pointerId=null;this.expandable=false;this.pendingScroll=false;this.lastPenTap=null;this.onToolChange=null;this.drawQueued=false;
       this.bind();this.resizeCss();window.addEventListener("resize",()=>this.resizeCss());
     }
     bind(){
@@ -24,7 +24,8 @@
     setPaper(paper){this.paper=["lined","grid","blank"].includes(paper)?paper:"blank";this.draw()}
     setExpandable(value){this.expandable=!!value;this.canvas.parentElement?.classList.toggle("serviceCanvas",this.expandable)}
     async reset(doc={}){this.height=this.expandable?Math.max(1000,Number(doc.height)||1000):1000;this.canvas.height=this.height;this.objects=Array.isArray(doc.objects)?structuredClone(doc.objects):[];this.redoStack=[];this.paper=["lined","grid","blank"].includes(doc.paper)?doc.paper:"blank";this.background=doc.background||null;this.backgroundImage=null;if(this.background){await this.loadBackground(this.background)}this.draw();this.resizeCss()}
-    expandNear(y){if(!this.expandable||y<this.height-180)return;this.height+=800;this.canvas.height=this.height;this.pendingScroll=true;this.draw();this.resizeCss()}
+    expandNear(y){if(!this.expandable||y<this.height-180)return;this.height+=800;this.canvas.height=this.height;this.pendingScroll=true;this.scheduleDraw();this.resizeCss()}
+    scheduleDraw(){if(this.drawQueued)return;this.drawQueued=true;const frame=window.requestAnimationFrame||((callback)=>setTimeout(callback,0));frame(()=>{this.drawQueued=false;this.draw()})}
     loadBackground(src){return new Promise(resolve=>{const img=new Image();img.onload=()=>{this.backgroundImage=img;resolve()};img.onerror=()=>resolve();img.src=src})}
     down(e){
       if(e.isPrimary===false||(e.button!==undefined&&e.button!==0&&e.pointerType==="mouse"))return;e.preventDefault();e.stopPropagation();const p=this.point(e);
@@ -37,11 +38,11 @@
       if(this.tool==="text"){const text=prompt("Text eingeben:","");if(text?.trim()){this.commit({type:"text",x:p.x,y:p.y,text:text.trim(),color:this.color,width:this.lineWidth})}return}
       if(this.tool==="eraser"){this.eraseAt(p);return}
       this.pointerId=e.pointerId;this.canvas.setPointerCapture?.(e.pointerId);
-      this.active=this.tool==="freehand"?{type:"freehand",points:[p],color:this.color,width:this.lineWidth}:{type:this.tool,x1:p.x,y1:p.y,x2:p.x,y2:p.y,color:this.color,width:this.lineWidth};this.draw();
+      this.active=this.tool==="freehand"?{type:"freehand",points:[p],color:this.color,width:this.lineWidth}:{type:this.tool,x1:p.x,y1:p.y,x2:p.x,y2:p.y,color:this.color,width:this.lineWidth};this.scheduleDraw();
     }
-    move(e){if(this.pointerId!==e.pointerId||!this.active)return;e.preventDefault();e.stopPropagation();const p=this.point(e);this.expandNear(p.y);if(this.active.type==="freehand"){const last=this.active.points.at(-1);if(!last||Math.hypot(p.x-last.x,p.y-last.y)>2)this.active.points.push(p)}else{this.active.x2=p.x;this.active.y2=p.y}this.draw()}
+    move(e){if(this.pointerId!==e.pointerId||!this.active)return;e.preventDefault();e.stopPropagation();const events=e.getCoalescedEvents?.()||[e];events.forEach(pointEvent=>{const p=this.point(pointEvent);this.expandNear(p.y);if(this.active.type==="freehand"){const last=this.active.points.at(-1);if(!last||Math.hypot(p.x-last.x,p.y-last.y)>2)this.active.points.push(p)}else{this.active.x2=p.x;this.active.y2=p.y}});this.scheduleDraw()}
     up(e){if(this.pointerId!==e.pointerId||!this.active)return;e.preventDefault();e.stopPropagation();const item=this.active;this.active=null;this.pointerId=null;this.canvas.releasePointerCapture?.(e.pointerId);if(item.type!=="freehand"||item.points.length>1){this.lastPenTap=null;this.commit(item)}else{if(e.pointerType==="pen"){const point=item.points[0];this.lastPenTap={time:Date.now(),x:point.x,y:point.y}}else this.lastPenTap=null;this.commit(item)}if(this.pendingScroll){this.pendingScroll=false;requestAnimationFrame(()=>this.canvas.parentElement?.scrollTo({top:this.canvas.parentElement.scrollHeight,behavior:"smooth"}))}}
-    commit(item){this.objects.push(structuredClone(item));this.redoStack=[];this.draw()}
+    commit(item){this.objects.push(structuredClone(item));this.redoStack=[];this.scheduleDraw()}
     undo(){if(!this.objects.length)return;this.redoStack.push(this.objects.pop());this.draw()}
     redo(){if(!this.redoStack.length)return;this.objects.push(this.redoStack.pop());this.draw()}
     eraseAt(p){let best=-1,bestDistance=45;this.objects.forEach((o,i)=>{const d=this.distance(o,p);if(d<bestDistance){bestDistance=d;best=i}});if(best>=0){this.redoStack=[];this.objects.splice(best,1);this.draw()}}

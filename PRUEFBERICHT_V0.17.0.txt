@@ -1,0 +1,55 @@
+HASPL REGIEAPP V0.17.0 – PRÜFBERICHT
+=====================================
+
+Prüfdatum: 02.09.2026
+Ziel: Flüssige Stifteingabe ohne Wartezeit zwischen handgeschriebenen Buchstaben
+
+1. FLÜSSIGE STIFTEINGABE
+------------------------
+ERGEBNIS: BESTANDEN
+- Pointer-Bewegungen werden vollständig und ohne künstliche Wartezeit angenommen.
+- Mehrere vom Browser zusammengefasste Stiftpunkte werden über Coalesced Pointer Events verarbeitet.
+- Das Neuzeichnen der großen Zeichenfläche wird auf höchstens einmal pro Animationsframe gebündelt.
+- Normales Schreiben wird nicht durch die Doppeltipp-Erkennung verzögert.
+- Schnelle aufeinanderfolgende Buchstaben und Striche können ohne Pause geschrieben werden.
+
+2. APPLE-PENCIL-WERKZEUGBEDIENUNG
+----------------------------------
+ERGEBNIS: BESTANDEN
+- Stifttipps auf die Werkzeugbuttons wählen das jeweilige Werkzeug.
+- Zwei schnelle Stifttipps auf die Zeichenfläche wählen weiterhin automatisch den Radierer.
+- Der unbeabsichtigte erste Punkt des Doppeltipps wird entfernt.
+- Die aktive Werkzeuganzeige wechselt automatisch auf „Radierer“.
+
+3. ZEICHENFLÄCHE
+----------------
+ERGEBNIS: BESTANDEN
+- Pointer-Capture bleibt während eines Strichs aktiv.
+- Textauswahl, Kopieren, Kontextmenü und Drag-and-drop bleiben blockiert.
+- Maus, Touch, Apple Pencil und andere Pointer-Stifte bleiben unterstützt.
+
+4. VERSION UND KOMPATIBILITÄT
+----------------------------
+ERGEBNIS: BESTANDEN
+- Sichtbare App-Version, version.json, Manifest, Paketversion und PDF-Metadaten: V0.17.0.
+- IndexedDB-Name haspl-regieapp-v1 und Version 2 bleiben unverändert.
+- Offline-/Portal-Kompatibilität bleibt erhalten.
+
+5. TECHNISCHE PRÜFUNGEN
+-----------------------
+ERGEBNIS: BESTANDEN
+- Test mit vielen Stiftbewegungen ohne synchrones Neuzeichnen bei jedem Punkt.
+- Test zusammengefasster Pointer-Punkte.
+- Apple-Pencil-Doppeltipp-Test mit automatischer Radierer-Auswahl.
+- JavaScript-Syntaxprüfung, TypeScript-Prüfung und Produktions-Build.
+- ZIP-Integrität und Test-Entpacken.
+
+6. RELEASE-ARCHIV
+-----------------
+ERGEBNIS: BESTANDEN
+- Archiv: HASPL_RegieApp_V0.17.0.zip.
+- Separate Downloadkopie und Produktions-Build-Asset entsprechen dem endgültigen Archiv.
+
+VERÖFFENTLICHUNG
+----------------
+Es wurde kein Deployment und keine Veröffentlichung durchgeführt.
