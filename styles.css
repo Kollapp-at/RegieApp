@@ -81,6 +81,7 @@ html[data-theme="dark"] #drawingColor{background:#eaf0f3;border-color:#8194a0;co
 .canvasWrap.serviceCanvas canvas{display:inline-block;max-height:none;margin:0 auto 18px;vertical-align:top}
 .drawingDialog,.drawingShell,.canvasWrap,.canvasWrap canvas{-webkit-user-select:none;user-select:none;-webkit-touch-callout:none}
 .canvasWrap canvas{-webkit-user-drag:none}
+.canvasWrap canvas{touch-action:none}
 
 /* V0.4.3 - vollständige Buttons und durchsuchbare LV-Materialauswahl */
 button{max-width:100%;overflow-wrap:anywhere}
@@ -112,7 +113,7 @@ html[data-theme="dark"] .deleteLvWarning{background:#3b2223;border-color:#633536
 @media(max-width:390px){.appHeader{height:116px;flex-wrap:wrap;align-content:center;gap:4px 8px}.mainNav{top:116px}.brand{flex:1 1 100%;width:100%}.brandLogo{width:38px;height:38px}.brandCredit{font-size:8px}.brand b{font-size:15px}.headerStatus{width:100%;justify-content:flex-end;gap:5px}.statusBadge{max-width:120px}.themeToggle{min-height:40px}.iconBtn{min-width:40px;width:40px;height:40px}}
 .drawingTools.paperMode .paperControl{display:flex}
 
-/* V0.17.0 – Wochenberichte */
+/* V0.18.0 – Wochenberichte */
 .weeklySourceSummary{margin-top:14px;padding:12px 14px;border-radius:10px;background:#edf5f9;color:#31556b;font-weight:700}.weeklyDays{display:grid;grid-template-columns:repeat(7,minmax(0,1fr));gap:8px}.weeklyDay{min-width:0;padding:11px;border:1px solid var(--line);border-radius:10px;background:#f7f9fa}.weeklyDay b,.weeklyDay small{display:block}.weeklyDay small{margin-top:3px;color:var(--muted)}
 html[data-theme="dark"] .weeklySourceSummary{background:#183142;color:#dceaf1}html[data-theme="dark"] .weeklyDay{background:#101b25}
 @media(max-width:900px){.weeklyDays{grid-template-columns:repeat(4,minmax(0,1fr))}}

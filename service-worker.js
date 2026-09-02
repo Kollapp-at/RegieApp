@@ -1,5 +1,5 @@
-const CACHE="haspl-regieapp-v0.17.0-shell-1";
-const RUNTIME="haspl-regieapp-v0.17.0-runtime-1";
+const CACHE="haspl-regieapp-v0.18.0-shell-1";
+const RUNTIME="haspl-regieapp-v0.18.0-runtime-1";
 const SHELL=["./","./index.html","./styles.css","./manifest.webmanifest","./version.json","./icon.svg","./icon-180.png","./icon-192.png","./icon-512.png","./assets/haspl-logo.png","./assets/jszip.min.js","./assets/pdf.min.mjs","./assets/pdf.worker.min.mjs","./assets/jspdf.umd.min.js","./assets/jspdf.plugin.autotable.min.js","./js/theme.js","./js/auth.js","./js/db.js","./js/api.js","./js/sync.js","./js/drawing.js","./js/lv-import.js","./js/print.js","./js/app.js","./js/weekly.js","./js/v050-search.js"];
 self.addEventListener("install",event=>event.waitUntil(caches.open(CACHE).then(cache=>cache.addAll(SHELL)).then(()=>self.skipWaiting())));
 self.addEventListener("activate",event=>event.waitUntil(caches.keys().then(keys=>Promise.all(keys.filter(key=>key!==CACHE&&key!==RUNTIME&&key.startsWith("haspl-regieapp-")).map(key=>caches.delete(key)))).then(()=>self.clients.claim())));
