@@ -3,7 +3,7 @@
   class DrawingPad{
     constructor(canvas){
       this.canvas=canvas;this.ctx=canvas.getContext("2d");this.width=1600;this.height=1000;canvas.width=this.width;canvas.height=this.height;
-      this.tool="freehand";this.color="#c62828";this.lineWidth=6;this.paper="blank";this.objects=[];this.redoStack=[];this.background=null;this.backgroundImage=null;this.active=null;this.pointerId=null;this.expandable=false;this.pendingScroll=false;this.lastPenTap=null;this.onToolChange=null;this.drawQueued=false;
+      this.tool="freehand";this.color="#c62828";this.lineWidth=6;this.paper="blank";this.objects=[];this.redoStack=[];this.background=null;this.backgroundImage=null;this.active=null;this.pointerId=null;this.expandable=false;this.pendingScroll=false;this.onToolChange=null;this.drawQueued=false;
       this.bind();this.resizeCss();window.addEventListener("resize",()=>this.resizeCss());
     }
     bind(){
@@ -30,11 +30,6 @@
     loadBackground(src){return new Promise(resolve=>{const img=new Image();img.onload=()=>{this.backgroundImage=img;resolve()};img.onerror=()=>resolve();img.src=src})}
     down(e){
       if(e.isPrimary===false||(e.button!==undefined&&e.button!==0&&e.pointerType==="mouse"))return;e.preventDefault();e.stopPropagation();const p=this.point(e);
-      if(e.pointerType==="pen"&&this.lastPenTap&&Date.now()-this.lastPenTap.time<=420&&Math.hypot(p.x-this.lastPenTap.x,p.y-this.lastPenTap.y)<=70){
-        const last=this.objects.at(-1);
-        if(last?.type==="freehand"&&last.points.length===1){this.objects.pop();this.redoStack=[]}
-        this.lastPenTap=null;this.setTool("eraser");this.draw();return;
-      }
       this.expandNear(p.y);
       if(this.tool==="text"){const text=prompt("Text eingeben:","");if(text?.trim()){this.commit({type:"text",x:p.x,y:p.y,text:text.trim(),color:this.color,width:this.lineWidth})}return}
       if(this.tool==="eraser"){this.eraseAt(p);return}
@@ -42,7 +37,7 @@
       this.active=this.tool==="freehand"?{type:"freehand",points:[p],color:this.color,width:this.lineWidth}:{type:this.tool,x1:p.x,y1:p.y,x2:p.x,y2:p.y,color:this.color,width:this.lineWidth};this.draw();
     }
     move(e){if(this.pointerId!==e.pointerId||!this.active)return;e.preventDefault();e.stopPropagation();const events=e.getCoalescedEvents?.()||[e];let redrawShape=false;events.forEach(pointEvent=>{const p=this.point(pointEvent);this.expandNear(p.y);if(this.active.type==="freehand"){const last=this.active.points.at(-1);if(!last||Math.hypot(p.x-last.x,p.y-last.y)>2){this.active.points.push(p);if(last)this.drawFreehandSegment(this.active,last,p)}}else{this.active.x2=p.x;this.active.y2=p.y;redrawShape=true}});if(redrawShape)this.scheduleDraw()}
-    up(e){if(this.pointerId!==e.pointerId||!this.active)return;e.preventDefault();e.stopPropagation();const item=this.active;this.active=null;this.pointerId=null;this.canvas.releasePointerCapture?.(e.pointerId);if(item.type!=="freehand"||item.points.length>1){this.lastPenTap=null;this.commit(item,item.type!=="freehand")}else{if(e.pointerType==="pen"){const point=item.points[0];this.lastPenTap={time:Date.now(),x:point.x,y:point.y}}else this.lastPenTap=null;this.commit(item,false)}if(this.pendingScroll){this.pendingScroll=false;requestAnimationFrame(()=>this.canvas.parentElement?.scrollTo({top:this.canvas.parentElement.scrollHeight,behavior:"smooth"}))}}
+    up(e){if(this.pointerId!==e.pointerId||!this.active)return;e.preventDefault();e.stopPropagation();const item=this.active;this.active=null;this.pointerId=null;this.canvas.releasePointerCapture?.(e.pointerId);this.commit(item,item.type!=="freehand");if(this.pendingScroll){this.pendingScroll=false;requestAnimationFrame(()=>this.canvas.parentElement?.scrollTo({top:this.canvas.parentElement.scrollHeight,behavior:"smooth"}))}}
     commit(item,redraw=true){this.objects.push(structuredClone(item));this.redoStack=[];if(redraw)this.draw()}
     undo(){if(!this.objects.length)return;this.redoStack.push(this.objects.pop());this.draw()}
     redo(){if(!this.redoStack.length)return;this.objects.push(this.redoStack.pop());this.draw()}

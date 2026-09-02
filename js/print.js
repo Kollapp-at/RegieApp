@@ -486,7 +486,7 @@
     const JsPdf=window.jspdf?.jsPDF;
     if(!JsPdf)throw new Error("PDF-Modul konnte nicht geladen werden");
     const doc=new JsPdf({orientation:"portrait",unit:"mm",format:"a4",compress:true,putOnlyUsedFonts:true}),title=reportTitle(report),number=report.reportNo||report.requestNo||date(report.date||report.periodFrom),{project,headOffice}=context(report,master),projectName=report.projectName||project.name||report.manualProject?.name||"Baustelle";
-     doc.setProperties({title:`${title} ${number}`.trim(),subject:"HASPL RegieApp Bericht",author:VORAU_COMPANY.companyName,creator:"HASPL RegieApp V0.18.0"});
+     doc.setProperties({title:`${title} ${number}`.trim(),subject:"HASPL RegieApp Bericht",author:VORAU_COMPANY.companyName,creator:"HASPL RegieApp V0.19.0"});
     const state={y:PAGE.top};
      if(report.type==="work")await workPdf(doc,state,report,master,options);
      else if(report.type==="weekly")await weeklyPdf(doc,state,report,master,options);

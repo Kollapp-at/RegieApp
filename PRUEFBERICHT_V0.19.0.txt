@@ -1,0 +1,55 @@
+HASPL REGIEAPP V0.19.0 – PRÜFBERICHT
+=====================================
+
+Prüfdatum: 02.09.2026
+Ziel: Reine flüssige Freihand-Stifteingabe ohne Doppeltipp-Werkzeugerkennung
+
+1. DOPPELTIPP-LOGIK ENTFERNT
+----------------------------
+ERGEBNIS: BESTANDEN
+- Die automatische Radierer-Auswahl per Stift-Doppeltipp wurde vollständig entfernt.
+- Es gibt keinen Doppeltipp-Zustand und kein Zeitfenster mehr im Stift-Eingabepfad.
+- Zwei schnelle Stifttipps bleiben normale Freihandeingaben.
+- Der Radierer kann weiterhin direkt über den Werkzeugbutton ausgewählt werden.
+
+2. DIREKTE FREIHAND-EINGABE
+---------------------------
+ERGEBNIS: BESTANDEN
+- Jeder neue Freihandabschnitt wird direkt auf die bestehende Zeichenfläche gezeichnet.
+- Vorhandene Buchstaben und Striche werden während des Schreibens nicht vollständig neu gerendert.
+- Das Absetzen des Stifts löst bei Freihandstrichen kein vollständiges Neuzeichnen aus.
+- Vom Browser zusammengefasste Stiftpunkte werden vollständig verarbeitet.
+- touch-action: none bleibt direkt am Canvas aktiv.
+
+3. ZEICHENFLÄCHE
+----------------
+ERGEBNIS: BESTANDEN
+- Pointer-Capture bleibt während eines Strichs aktiv.
+- Textauswahl, Kopieren, Kontextmenü und Drag-and-drop bleiben blockiert.
+- Maus, Touch, Apple Pencil und andere Pointer-Stifte bleiben unterstützt.
+
+4. VERSION UND KOMPATIBILITÄT
+----------------------------
+ERGEBNIS: BESTANDEN
+- Sichtbare App-Version, version.json, Manifest, Paketversion und PDF-Metadaten: V0.19.0.
+- IndexedDB-Name haspl-regieapp-v1 und Version 2 bleiben unverändert.
+- Offline-/Portal-Kompatibilität bleibt erhalten.
+
+5. TECHNISCHE PRÜFUNGEN
+-----------------------
+ERGEBNIS: BESTANDEN
+- Direkter Segmenttest mit 160 zusammengefassten Stiftpunkten.
+- Kein vollständiger Canvas-Redraw während der Freihand-Bewegungsserie.
+- Zwei schnelle Stifttipps wechseln das Werkzeug nicht.
+- JavaScript-Syntaxprüfung, TypeScript-Prüfung und Produktions-Build.
+- ZIP-Integrität und Test-Entpacken.
+
+6. RELEASE-ARCHIV
+-----------------
+ERGEBNIS: BESTANDEN
+- Archiv: HASPL_RegieApp_V0.19.0.zip.
+- Separate Downloadkopie und Produktions-Build-Asset entsprechen dem endgültigen Archiv.
+
+VERÖFFENTLICHUNG
+----------------
+Es wurde kein Deployment und keine Veröffentlichung durchgeführt.

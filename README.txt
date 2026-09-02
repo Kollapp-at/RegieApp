@@ -1,4 +1,4 @@
-HASPL REGIEAPP V0.18.0
+HASPL REGIEAPP V0.19.0
 =====================
 
 BASIS UND KOMPATIBILITÄT
@@ -9,7 +9,7 @@ BASIS UND KOMPATIBILITÄT
 - Bestehende IndexedDB haspl-regieapp-v1 bleibt erhalten.
 - Additive IndexedDB-Migration von Version 1 auf 2.
 
-NEU IN V0.18.0
+NEU IN V0.19.0
 ----------------
 
 - Wochenberichte aggregieren Tagesberichte lokal datumsrichtig von Montag bis Sonntag.
@@ -18,6 +18,7 @@ NEU IN V0.18.0
 - Suche, Filterung und Sortierung berücksichtigen alle drei Berichtstypen.
 - PDFs verwenden den vollständigen einheitlichen Firmensitz-Kopf der Elektrotechnik Haspl GmbH in Vorau.
 - Das Release-ZIP wird separat neben der App als Installations- und Uploadpaket bereitgestellt.
+- Die automatische Radierer-Auswahl per Stift-Doppeltipp wurde entfernt, damit schnelle Freihandstriche nicht als Werkzeugwechsel interpretiert werden.
 
 NEU IN V0.4.5
 
